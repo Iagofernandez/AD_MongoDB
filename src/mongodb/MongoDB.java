@@ -52,7 +52,8 @@ public void incDocumento(){
     BasicDBObject doc = new BasicDBObject();
     doc.put("_id", "p2");
 
-updateObject.put("$inc", doc);
+updateObject.append("$inc", new BasicDBObject().append("cantidade", 7));
+collection.updateOne(doc, updateObject);
     
 }
 
@@ -60,11 +61,12 @@ public void borrarDocument(){
       MongoClient mongoClient = new MongoClient("localhost", 27017);
     MongoDatabase database = mongoClient.getDatabase("tenda");
     MongoCollection<Document> collection = database.getCollection("pedidos");
-    BasicDBObject searchQuery = new BasicDBObject();
+    
     BasicDBObject doc = new BasicDBObject();
-searchQuery.put("_id","p2");
+    doc.put("_id","p2");
  
-doc.remove(searchQuery);
+    collection.deleteOne(doc);
+
 }
 
 
@@ -76,7 +78,7 @@ doc.remove(searchQuery);
 //      mongo.actualizarDocumento();
       
       //METODOS DE INC Y BORRAR NO HACEN NADA, REVISAR POR QUE
-//      mongo.incDocumento();
+     // mongo.incDocumento();
        mongo.borrarDocument();
       
         
