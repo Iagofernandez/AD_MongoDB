@@ -5,6 +5,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Projections.include;
 import org.bson.Document;
 
 public class MongoDB {
@@ -68,6 +70,27 @@ public void borrarDocument(){
     collection.deleteOne(doc);
 
 }
+public void amosar1(){
+    MongoClient mongoClient = new MongoClient("localhost", 27017);
+    MongoDatabase database = mongoClient.getDatabase("tenda");
+    MongoCollection<Document> collection = database.getCollection("pedidos");
+    
+     Document doc = new Document();
+
+        doc = collection.find(eq("_id", "p3")).first();
+
+        System.out.println(doc);
+
+}
+public void amosar2(){
+    MongoClient mongoClient = new MongoClient("localhost", 27017);
+    MongoDatabase database = mongoClient.getDatabase("tenda");
+    MongoCollection<Document> collection = database.getCollection("pedidos");
+    
+    Document doc = new Document();
+     doc = collection.find(eq("_id", "p1")).projection(include("codcli", "codpro", "cantidade")).first();
+     System.out.println(doc);
+}
 
 
           
@@ -77,9 +100,11 @@ public void borrarDocument(){
 //      mongo.insertarDocumento();
 //      mongo.actualizarDocumento();
       
-      //METODOS DE INC Y BORRAR NO HACEN NADA, REVISAR POR QUE
+    
      // mongo.incDocumento();
-       mongo.borrarDocument();
+     //  mongo.borrarDocument();
+      mongo.amosar1();
+      mongo.amosar2();
       
         
        
