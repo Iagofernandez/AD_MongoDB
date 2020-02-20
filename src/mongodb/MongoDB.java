@@ -3,9 +3,11 @@ package mongodb;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.gt;
 import static com.mongodb.client.model.Projections.include;
 import org.bson.Document;
 
@@ -91,7 +93,26 @@ public void amosar2(){
      doc = collection.find(eq("_id", "p1")).projection(include("codcli", "codpro", "cantidade")).first();
      System.out.println(doc);
 }
-
+public void amosar3(){
+    MongoClient mongoClient = new MongoClient("loclahost", 27017);
+    MongoDatabase database = mongoClient.getDatabase("tenda");
+    MongoCollection<Document> collection = database.getCollection("pedidos");
+    
+    // Necesitamos varios doc de esta collecion
+    // Un iterator permite recorre una collecion, y asi leer multiples elementos
+    // Todo doc cuya cantidad sea superior a 2, que nos devuelva el codcli y el codpro
+    FindIterable<Document> doc = collection.find(gt("cantidade", 2)).projection(include("codcli", "codpro"));
+    
+    // Vamos recorreindo el iterartor
+    // Se alamcena en las variables cada uno de los valores que pedimos
+    for (Document d: doc){
+        String codcli = d.getString("codcli");
+        String codpro = d.getString("codpro");
+        
+        //Imprimiendo el resultado
+        System.out.println("Pedido de codcli " + codcli + " y codpro de " + codpro );
+    }
+}
 
           
 
@@ -105,7 +126,7 @@ public void amosar2(){
      //  mongo.borrarDocument();
       mongo.amosar1();
       mongo.amosar2();
-      
+      mongo.amosar3();
         
        
    
