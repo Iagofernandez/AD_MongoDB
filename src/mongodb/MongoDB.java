@@ -94,7 +94,7 @@ public void amosar2(){
      System.out.println(doc);
 }
 public void amosar3(){
-    MongoClient mongoClient = new MongoClient("loclahost", 27017);
+    MongoClient mongoClient = new MongoClient("localhost", 27017);
     MongoDatabase database = mongoClient.getDatabase("tenda");
     MongoCollection<Document> collection = database.getCollection("pedidos");
     
