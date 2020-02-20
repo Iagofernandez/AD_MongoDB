@@ -6,8 +6,10 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.gt;
+import static com.mongodb.client.model.Filters.lt;
 import static com.mongodb.client.model.Projections.include;
 import org.bson.Document;
 
@@ -104,7 +106,7 @@ public void amosar3(){
     FindIterable<Document> doc = collection.find(gt("cantidade", 2)).projection(include("codcli", "codpro"));
     
     // Vamos recorreindo el iterartor
-    // Se alamcena en las variables cada uno de los valores que pedimos
+    // Se almacena en las variables cada uno de los valores que nos devuelve de codcli y cod pro
     for (Document d: doc){
         String codcli = d.getString("codcli");
         String codpro = d.getString("codpro");
@@ -112,6 +114,28 @@ public void amosar3(){
         //Imprimiendo el resultado
         System.out.println("Pedido de codcli " + codcli + " y codpro de " + codpro );
     }
+}
+
+public void amosar4(){
+    // Similar al anterio
+    // Ahora necesitamos los que tenga cantidad entre 2 y 5, las dos a la vez
+    // Como es doble condicion se pone el and
+     MongoClient mongoClient = new MongoClient("localhost", 27017);
+    MongoDatabase database = mongoClient.getDatabase("tenda");
+    MongoCollection<Document> collection = database.getCollection("pedidos");
+    
+    FindIterable<Document> doc = collection.find(and(gt("cantidade",2),lt("cantidade",5))).projection(include("codcli","codpro"));
+    
+    for (Document d:doc){
+        String codcli = d.getString("codcli");
+        String codpro = d.getString("codpro");
+        
+        System.out.println("Peidos de codcli " + codcli  + " y codpro " + codpro);
+    }
+}
+
+public void amosar5(){
+    
 }
 
           
@@ -127,7 +151,7 @@ public void amosar3(){
       mongo.amosar1();
       mongo.amosar2();
       mongo.amosar3();
-        
+      mongo.amosar4();  
        
    
     
