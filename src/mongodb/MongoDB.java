@@ -135,6 +135,24 @@ public void amosar4(){
 }
 
 public void amosar5(){
+    // Metodo que muestra el codcli y cod pro de todos ls pedidos
+    MongoClient mongoClient = new MongoClient("localhost", 27017);
+    MongoDatabase database = mongoClient.getDatabase("tenda");
+    MongoCollection<Document> collection = database.getCollection("pedidos");
+    
+    
+    FindIterable<Document> doc = collection.find().projection(include("_id","codcli", "codpro"));
+    
+    for(Document d: doc){
+        String id = d.getString("_id");
+        String codcli = d.getString("codcli");
+        String codpro = d.getString("codpro");
+        
+        // Asi se muestra el codcli, el codpro y el id
+        
+        System.out.println(id + " " + codcli + " " + codpro);
+    }
+    
     
 }
 
@@ -152,7 +170,7 @@ public void amosar5(){
       mongo.amosar2();
       mongo.amosar3();
       mongo.amosar4();  
-       
+      mongo.amosar5();
    
     
 }
