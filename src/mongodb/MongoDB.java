@@ -151,9 +151,32 @@ public void amosar5(){
         // Asi se muestra el codcli, el codpro y el id
         
         System.out.println(id + " " + codcli + " " + codpro);
-    }
+    }   
     
     
+}
+
+public void incrementarDoble(){
+    MongoClient mongoClient = new MongoClient("localhost", 27017);
+    MongoDatabase database = mongoClient.getDatabase("tenda");
+    MongoCollection<Document> collection = database.getCollection("pedidos");
+    
+    Document doc = new Document();
+    doc =  (Document) collection.find(eq("_id","p4")).first();
+    
+    int cantidad = 2 * doc.getInteger("cantidade");
+    
+    // Se necesitan crear nuevos Doc 
+    //Este primero es el que nos realiza el cambio, pero queda en el aire
+    Document doc2 = new Document();
+    doc2.put("cantidade", cantidad);
+    
+    // Aqui es donde se actualiza el doc "original"
+   
+    Document doc3 = new Document();
+    doc3.put("$set", doc2);
+    
+    collection.updateOne(doc, doc3);
 }
 
           
@@ -171,7 +194,7 @@ public void amosar5(){
       mongo.amosar3();
       mongo.amosar4();  
       mongo.amosar5();
-   
+      mongo.actualizarDocumento();
     
 }
 }
